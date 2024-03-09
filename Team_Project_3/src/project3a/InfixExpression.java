@@ -56,7 +56,7 @@ public class InfixExpression {
 		return result;
 	}
 	/**
-	 * Prints expression in user friendly format
+	 * Prints expression(currently printing stack need to change to binary tree)
 	 * @param stk: expression stack
 	 */
 	public void PrintInfix(Stack<String> stk) {
