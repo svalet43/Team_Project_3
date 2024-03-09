@@ -36,13 +36,14 @@ public class InfixExpression {
 		String result;
 		for(int i = 0; i<lineArr.length; i++) {
 			if(Character.isDigit(lineArr[i])) {newLine.append(lineArr[i]);} //if current iteration is number append to string builder
-			else if(lineArr[i] == '+' || lineArr[i] == '-' || lineArr[i] == '*' || lineArr[i] == '/' || lineArr[i] == '%' || lineArr[i] == '^') {
+			else if(lineArr[i] == '+' || lineArr[i] == '-' || lineArr[i] == '*' || lineArr[i] == '/' || lineArr[i] == '%' || lineArr[i] == '^' 
+					|| lineArr[i] == '(' || lineArr[i] == ')') {
 				//if single character operator, append with correct spacing
 				newLine.append(" ");
 				newLine.append(lineArr[i]);
 				newLine.append(" ");
 			}
-			else if(lineArr[i] == '|' || lineArr[i] == '&' || lineArr[i] == '>' || lineArr[i] == '<' || lineArr[i] == '=' || lineArr[i] == '!') {
+			else if(lineArr[i] == '|' || lineArr[i] == '&' || lineArr[i] == '=' || lineArr[i] == '!') {
 				//if multi-character operator, append both characters with correct spacing and iterate "i" once to unwanted repetitions 
 				newLine.append(" ");
 				newLine.append(lineArr[i]);
@@ -50,13 +51,30 @@ public class InfixExpression {
 				newLine.append(" ");
 				i++;
 			}
+			else if(lineArr[i] == '>' || lineArr[i] == '<') {
+				//if equality operator, check if it is 2 char operator
+				if(Character.isDigit(lineArr[i+1])){
+					//if not 2 char operator, append
+					newLine.append(" ");
+					newLine.append(lineArr[i]);
+					newLine.append(" ");
+				}
+				else {
+					//otherwise, append 2 char operator
+					newLine.append(" ");
+					newLine.append(lineArr[i]);
+					newLine.append(lineArr[i+1]);
+					newLine.append(" ");
+					i++;
+				}
+			}
 		}
 		newLine.append(" ");
 		result = newLine.toString();
 		return result;
 	}
 	/**
-	 * Prints expression(currently printing stack need to change to binary tree)
+	 * Prints expression from stack, !!!!temporary!!!!
 	 * @param stk: expression stack
 	 */
 	public void PrintInfix(Stack<String> stk) {
@@ -64,6 +82,37 @@ public class InfixExpression {
 			System.out.print(stk.pop());
 		}
 		System.out.println();
+	}
+	/**
+	 * Method determines the precedence of an input operator character
+	 * @param op: String of operator
+	 * @return: returns int value of precedence, higher the value the faster it is evaluated, returns 0 if invalid operator
+	 */
+	public int OperatorPrecedence(String op) {
+		switch(op) {
+		//power
+		case"^":return 7;
+		//arithmetic
+		case"*":return 6;
+		case"/":return 6;
+		case"%":return 6;
+		case"+":return 5;
+		case"-":return 5;
+		//comparison
+		case">":return 4;
+		case">=":return 4;
+		case"<":return 4;
+		case"<=":return 4;
+		//equality comparison
+		case"==":return 3;
+		case"!=":return 3;
+		//logical and
+		case"&&":return 2;
+		//logical or
+		case"||":return 1;
+		
+		default:return 0;
+		}
 	}
 
 }
