@@ -5,10 +5,11 @@ import java.util.Stack;
 
 public class InfixExpression {
 	//FIXME: need to add binary tree functionality
-	private Stack<String> infixStack; //used to store expression in a stack of tokens, tokens are separated by spaces
+	private Stack<String> operandStk; //store expression operands
+	private Stack<TreeNode> operatorStk; //store expression operators
 	private TreeNode root; 
 	/**
-	 * Creates an "InfixExpression" object
+	 * Creates an "InfixExpression" object, the object is a binary tree of the input expression
 	 * @param exp: current expression in string form
 	 */
 	public InfixExpression(String line) {
@@ -16,13 +17,16 @@ public class InfixExpression {
 		String modLine = FixSpacing(line);
 		System.out.println(modLine); //for test
 		Scanner scan = new Scanner(modLine); //scanner object to look at line
-		infixStack = new Stack();
+		operandStk = new Stack();
+		operatorStk = new Stack();
 		while(scan.hasNext()) {
 			String currToken = scan.next(); //get current token
-			infixStack.push(currToken); // push token to stack
+			char ch = currToken.charAt(0);
+			if(Character.isDigit(ch)) {operandStk.push(currToken);} //if current token is digit, push to operand stack
+			else if(ch == '(') {operatorStk.push(new TreeNode(ch));} //if opening paren, push to operator stack
+			else if(ch == ')') {} //FIXME: needs to iterate until opening parenthesis is found, adding elements to tree
+			else {} //FIXME: needs to iterate until opening parenthesis is found, adding elements to tree
 		}
-		PrintInfix(infixStack);
-		System.out.println(); // for test
 
 	}
 	/**
@@ -74,7 +78,7 @@ public class InfixExpression {
 		return result;
 	}
 	/**
-	 * Prints expression from stack, !!!!temporary!!!!
+	 * Prints expression from stack, !!!!temporary!!!
 	 * @param stk: expression stack
 	 */
 	public void PrintInfix(Stack<String> stk) {
@@ -84,35 +88,35 @@ public class InfixExpression {
 		System.out.println();
 	}
 	/**
-	 * Method determines the precedence of an input operator character
+	 * Method determines the precedence of an input operator
 	 * @param op: String of operator
 	 * @return: returns int value of precedence, higher the value the faster it is evaluated, returns 0 if invalid operator
 	 */
 	public int OperatorPrecedence(String op) {
-		switch(op) {
-		//power
-		case"^":return 7;
-		//arithmetic
-		case"*":return 6;
-		case"/":return 6;
-		case"%":return 6;
-		case"+":return 5;
-		case"-":return 5;
-		//comparison
-		case">":return 4;
-		case">=":return 4;
-		case"<":return 4;
-		case"<=":return 4;
-		//equality comparison
-		case"==":return 3;
-		case"!=":return 3;
-		//logical and
-		case"&&":return 2;
-		//logical or
-		case"||":return 1;
+		if(op.equals("^")) {return 7;}
+		else if(op.equals("*") || op.equals("/") || op.equals("%")) {return 6;}
+		else if(op.equals("+") || op.equals("-")) {return 5;}
+		else if(op.equals(">") || op.equals(">=") || op.equals("<") || op.equals("<=")) {return 4;}
+		else if(op.equals("==") || op.equals("!=")) {return 3;}
+		else if(op.equals("&&")) {return 2;}
+		else if(op.equals("||")) {return 2;}
+		return 0;
+	}
+	/** FIXME!!!!!!!!!!!
+	 * Converts stack to binary expression tree
+	 * @param stk
+	 * @return
+	 */
+	public TreeNode toExpTree() {
 		
-		default:return 0;
-		}
+	}
+	/**FIXME!!!!!!!!!!1
+	 * Evaluates expression tree
+	 * @param root: the root of the tree
+	 * @return integer result of expression tree
+	 */
+	public int Evaluate(TreeNode root) {
+		
 	}
 
 }
