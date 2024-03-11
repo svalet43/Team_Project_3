@@ -1,3 +1,0 @@
-
-TeamProject_2/.classpath
-TeamProject_2/.project
