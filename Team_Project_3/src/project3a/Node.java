@@ -8,4 +8,5 @@ class Node {
         value = item;
         left = right = null;
     }
+    
 }
